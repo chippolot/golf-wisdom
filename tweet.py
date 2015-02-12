@@ -13,8 +13,9 @@ def connect():
     return api
 
 if __name__ == "__main__":
-	if random.random() > CHANCE:
-		print "not tweeting this time"
+	chance = random.random()
+	if chance > CHANCE:
+		print "not tweeting this time: ", chance
 		sys.exit()
 
 	tries = 0
