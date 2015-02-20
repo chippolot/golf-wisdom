@@ -2,7 +2,7 @@ import twitter
 import random
 import sys
 import os
-from local_settings import *
+from settings import *
 from markov import *
 
 def connect():
@@ -12,9 +12,22 @@ def connect():
                           access_token_secret=os.environ['TWITTER_ACCESS_TOKEN_SECRET'])
     return api
 
+def hashtagify(tweet):
+	orig_tweet = tweet
+
+	replacements = ['golf','GOLF','Golf']
+
+	for replacement in replacements:
+		tweet = tweet.replace(replacement,'#'+replacement)
+		if tweet != orig_tweet:
+			return tweet
+
+	return tweet
+
+
 if __name__ == "__main__":
 	chance = random.random()
-	if chance > CHANCE:
+	if chance > CHANCE and not DEBUG:
 		print "not tweeting this time: ", chance
 		sys.exit()
 
@@ -34,6 +47,8 @@ if __name__ == "__main__":
 			else:
 				print "Tweet too long: " + str(len(tweet))
 				continue
+
+		tweet = hashtagify(tweet)
 
 		if DEBUG == False:
 			api = connect()
